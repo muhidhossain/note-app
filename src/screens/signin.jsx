@@ -7,11 +7,36 @@ import {
   StyleSheet,
   Pressable,
 } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import Button from '../components/Button';
 import Input from '../components/Input';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../App';
 
 export default function SignIn({ navigation }) {
+  const [loading, setLoading] = useState(false);
+  const [signInInfo, setSignInInfo] = useState({
+    email: '',
+    password: '',
+  });
+  const [error, setError] = useState(null);
+
+  const login = () => {
+    signInWithEmailAndPassword(
+      auth,
+      signInInfo.email,
+      signInInfo.password
+    ).then((res) => {
+      console.log('Successfully signed in', res);
+    });
+  };
+
+  const handleInfoChange = (text, type) => {
+    setSignInInfo((info) => {
+      return { ...info, [type]: text };
+    });
+  };
+
   return (
     <SafeAreaView
       style={{
@@ -28,18 +53,25 @@ export default function SignIn({ navigation }) {
         Never forgat your notes
       </Text>
       <View style={{ paddingVertical: 25 }}>
-        <Input placeholder="Email address" />
-        <Input placeholder="Password" secureTextEntry />
+        <Input
+          placeholder="Email address"
+          autoCapitalize={'none'}
+          onChangeText={(text) => handleInfoChange(text, 'email')}
+        />
+        <Input
+          placeholder="Password"
+          secureTextEntry
+          onChangeText={(text) => handleInfoChange(text, 'password')}
+        />
       </View>
       <View
         style={{
           flex: 1,
-          justifyContent: 'flex-end',
-          paddingBottom: 40,
           alignItems: 'center',
         }}
       >
         <Button
+          onPress={login}
           title={'Login'}
           customStyle={{ alignSelf: 'center', marginBottom: 60 }}
         />

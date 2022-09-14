@@ -9,13 +9,15 @@ import {
 import React, { useState } from 'react';
 import Button from '../components/Button';
 import Input from '../components/Input';
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
-
-const auth = getAuth();
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { addDoc, collection } from 'firebase/firestore';
+import { auth, db } from '../../App';
+import { showMessage } from 'react-native-flash-message';
 
 const genderOptions = ['Male', 'Female'];
 
 export default function SignUp() {
+  const [loading, setLoading] = useState(false);
   const [signUpInfo, setSingUpInfo] = useState({
     email: '',
     password: '',
@@ -33,15 +35,29 @@ export default function SignUp() {
   };
 
   const signup = () => {
+    setLoading(true);
     createUserWithEmailAndPassword(auth, signUpInfo.email, signUpInfo.password)
       .then((userCredential) => {
         const user = userCredential.user;
+        addDoc(collection(db, 'users'), {
+          name: signUpInfo.name,
+          email: signUpInfo.email,
+          age: signUpInfo.age,
+          gender: signUpInfo.gender,
+          uid: user.uid,
+        });
         console.log('User created', user);
+        setLoading(false);
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         console.error(errorCode, errorMessage);
+        showMessage({
+          message: errorMessage,
+          type: 'danger',
+        });
+        setLoading(false);
       });
   };
 
@@ -56,6 +72,7 @@ export default function SignUp() {
       <View style={{ paddingVertical: 25 }}>
         <Input
           placeholder="Email address"
+          autoCapitalize={'none'}
           onChangeText={(text) => handleInfoChange(text, 'email')}
         />
         <Input
@@ -65,6 +82,7 @@ export default function SignUp() {
         />
         <Input
           placeholder="Full Name"
+          autoCapitalize={'words'}
           onChangeText={(text) => handleInfoChange(text, 'name')}
         />
         <Input

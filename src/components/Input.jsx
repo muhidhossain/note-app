@@ -1,13 +1,19 @@
 import { StyleSheet, TextInput } from 'react-native';
 import React from 'react';
 
-export default function Input({ placeholder, secureTextEntry, onChangeText }) {
+export default function Input({
+  placeholder,
+  secureTextEntry,
+  onChangeText,
+  autoCapitalize,
+}) {
   return (
     <TextInput
       placeholder={placeholder}
       style={styles.input}
       secureTextEntry={secureTextEntry}
       onChangeText={onChangeText}
+      autoCapitalize={autoCapitalize}
     />
   );
 }
