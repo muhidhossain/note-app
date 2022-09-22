@@ -1,11 +1,4 @@
-import {
-  Text,
-  SafeAreaView,
-  Platform,
-  View,
-  StyleSheet,
-  Pressable,
-} from 'react-native';
+import { Text, Platform, View, StyleSheet, Pressable } from 'react-native';
 import React, { useState } from 'react';
 import Button from '../components/Button';
 import Input from '../components/Input';
@@ -13,6 +6,8 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { addDoc, collection } from 'firebase/firestore';
 import { auth, db } from '../../App';
 import { showMessage } from 'react-native-flash-message';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import RadioInput from '../components/Radio-input';
 
 const genderOptions = ['Male', 'Female'];
 
@@ -92,27 +87,14 @@ export default function SignUp() {
         <View style={{ marginVertical: 20 }}>
           <Text>Select gender</Text>
         </View>
-        {genderOptions.map((gender) => (
-          <Pressable
-            onPress={() => handleInfoChange(gender, 'gender')}
-            style={styles.radioContainer}
-            key={gender}
-          >
-            <View
-              style={[
-                styles.outerCircle,
-                signUpInfo.gender === gender && styles.selectedOuterCircle,
-              ]}
-            >
-              <View
-                style={[
-                  styles.innerCircle,
-                  signUpInfo.gender === gender && styles.selectedInnerCircle,
-                ]}
-              />
-            </View>
-            <Text>{gender}</Text>
-          </Pressable>
+        {genderOptions.map((gender, index) => (
+          <RadioInput
+            key={index}
+            label={gender}
+            value={signUpInfo?.gender}
+            valueType={'gender'}
+            handleInfoChange={handleInfoChange}
+          />
         ))}
       </View>
       <View
@@ -138,41 +120,3 @@ export default function SignUp() {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  input: {
-    height: 48,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-    marginBottom: 25,
-  },
-  radioContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  outerCircle: {
-    height: 30,
-    width: 30,
-    borderRadius: 15,
-    borderWidth: 1,
-    borderColor: '#CFCFCF',
-    marginRight: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  selectedOuterCircle: {
-    borderColor: 'orange',
-  },
-  innerCircle: {
-    height: 20,
-    width: 20,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: '#CFCFCF',
-  },
-  selectedInnerCircle: {
-    backgroundColor: 'orange',
-    borderColor: 'orange',
-  },
-});

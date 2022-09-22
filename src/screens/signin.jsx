@@ -1,6 +1,5 @@
 import {
   Text,
-  SafeAreaView,
   Platform,
   Image,
   View,
@@ -12,6 +11,7 @@ import Button from '../components/Button';
 import Input from '../components/Input';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../App';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function SignIn({ navigation }) {
   const [loading, setLoading] = useState(false);

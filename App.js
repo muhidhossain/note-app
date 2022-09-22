@@ -1,4 +1,4 @@
-import { ActivityIndicator, SafeAreaView, StyleSheet } from 'react-native';
+import { ActivityIndicator, StyleSheet } from 'react-native';
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from './src/screens/home';
@@ -11,15 +11,8 @@ import { getFirestore } from 'firebase/firestore';
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import FlashMessage from 'react-native-flash-message';
-
-const firebaseConfig = {
-  apiKey: 'AIzaSyDvbxWrMbJcm7uLSfwK1YRPaw-msUtIcOI',
-  authDomain: 'note-app12.firebaseapp.com',
-  projectId: 'note-app12',
-  storageBucket: 'note-app12.appspot.com',
-  messagingSenderId: '839046131873',
-  appId: '1:839046131873:web:8f9cf1a514d0e16ebac0e0',
-};
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { firebaseConfig } from './firebase.config';
 
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
@@ -59,7 +52,7 @@ export default function App() {
   if (loading) {
     return (
       <SafeAreaView style={styles.activityIndicator}>
-        <ActivityIndicator color="blue" size="large" />
+        <ActivityIndicator color="#FFE600" size="large" />
       </SafeAreaView>
     );
   }
@@ -88,7 +81,7 @@ export default function App() {
           </>
         )}
       </Stack.Navigator>
-      <FlashMessage position="bottom" />
+      <FlashMessage position="top" />
     </NavigationContainer>
   );
 }

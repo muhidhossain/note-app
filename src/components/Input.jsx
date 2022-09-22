@@ -6,6 +6,8 @@ export default function Input({
   secureTextEntry,
   onChangeText,
   autoCapitalize,
+  multiline,
+  value,
 }) {
   return (
     <TextInput
@@ -14,6 +16,8 @@ export default function Input({
       secureTextEntry={secureTextEntry}
       onChangeText={onChangeText}
       autoCapitalize={autoCapitalize}
+      multiline={multiline}
+      value={value}
     />
   );
 }
